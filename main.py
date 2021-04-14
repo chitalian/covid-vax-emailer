@@ -15,7 +15,7 @@ SUBJECT = 'subject for email'
 # then security -> and turn on `Less secure app access`
 SENDER_EMAIL = "sender@gmail.com" 
 SENDER_PASS = 'sender_pass'
-RITE_AID = 'Rite Aid'
+STATE_CODE = 'CA'
 MY_LOC = (50.000, 50.000) # Longitude , Latitude
 MAX_DISTANCE = 10.0 # miles
 
@@ -65,7 +65,7 @@ def place_id(place):
    return place['properties']['id'] 
 
 def get_places_within(distane):
-    r = requests.get('https://www.vaccinespotter.org/api/v0/states/CA.json')
+    r = requests.get('https://www.vaccinespotter.org/api/v0/states/{}.json'.format(STATE_CODE))
     response = json.loads(r.content)
     places = response['features']
     places = [place for place in places if place_avail(place) and place_distance(place) < distane]
@@ -80,7 +80,6 @@ def process_loop():
     print("Looking for new places")
 
     places = get_places_within(MAX_DISTANCE)
-    places = [p for p in places if place_name(p) != RITE_AID]
     prev_ids = [place_id(p) for p in previous_places]
     new_places = [p for p in places if place_id(p) not in prev_ids]
 
