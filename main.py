@@ -77,7 +77,9 @@ def get_places_within(distance, client):
 
 
 all_places_all_client = {}
-
+for client in CLIENTS:
+    all_places_all_client[client['id']] = []
+    
 def play_alarm():
     for i in range(3):
         sound = SOUND_FILE
@@ -85,7 +87,7 @@ def play_alarm():
 
 def process_loop(client, sound=False):
     global all_places_all_client
-    all_places = all_places_all_client.get(client['id'], [])
+    all_places = all_places_all_client[client['id']]
     print("Looking for new places")
     max_distance = client['max_distance']
     emails = client['emails']
